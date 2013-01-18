@@ -20,7 +20,7 @@
       tags:
         - install
     - name: Disable SELinux
-      action: command setenforce 0
+      action: selinux policy=targeted state=permissive
       tags:
         - install
     - name: Add alias to 127.0.0.1 to /etc/hosts
