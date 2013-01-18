@@ -10,9 +10,13 @@ Ansible playbooks for Phabricator installations.
 
 `ansible-playbook rhel6/phabricator.yaml --tags install`
 
+Answer any prompts (currently just the domain on which Phabricator lives).
+
 #### Upgrading
 
 `ansible-playbook rhel6/phabricator.yaml --tags update`
+
+Press enter, because the prompt doesn't matter for updates.
 
 # LICENSE
 
