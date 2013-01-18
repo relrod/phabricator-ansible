@@ -4,6 +4,11 @@ Ansible playbooks for Phabricator installations.
 
 **This is still in very active development, and might break...**
 
+**NOTE: As of right now, this assumes that it's run on a dedicated
+box that is ONLY RUNNING PHABRICATOR.**
+
+**DO NOT RUN THIS BLINDLY ON A PRODUCTION BOX, IT _WILL_ BREAK THINGS**
+
 ## RHEL6
 
 #### Installing
