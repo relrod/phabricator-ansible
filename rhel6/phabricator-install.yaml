@@ -1,0 +1,92 @@
+---
+- hosts: all
+  user: root
+  vars_prompt:
+    domain: "Phabricator requires its own (sub)domain. What domain should it run on?"
+  tasks:
+    - name: Install dependency $item
+      action: yum pkg=$item state=installed
+      with_items:
+        - git
+        - subversion
+        - mercurial
+        - httpd
+        - php
+        - php-process
+        - php-mysql
+        - php-gd
+        - mysql-server
+        - python-pygments
+      tags:
+        - install
+    - name: Disable SELinux
+      action: command setenforce 0
+      tags:
+        - install
+    - name: Add alias to 127.0.0.1 to /etc/hosts
+      action: shell echo "127.0.0.1 ${domain}" >> /etc/hosts
+      tags:
+        - install
+    - name: Set PHABRICATOR_ENV. Forever.
+      action: shell creates=/etc/profile.d/phabricator.sh echo 'export PHABRICATOR_ENV=custom/myconfig' > /etc/profile.d/phabricator.sh
+      tags:
+        - install
+    - name: Source the new profile file.
+      action: shell source /etc/profile.d/phabricator.sh
+      tags:
+        - install
+        - update
+    - name: Config httpd
+      action: template src=phabricator-vhost.conf dest=/etc/httpd/conf.d/phabricator.conf
+      tags:
+        - install
+    - name: Stop PHD daemons
+      action: command chdir=/srv/www/facebook/phabricator ./bin/phd stop
+      tags:
+        - upgrade
+    - name: Clone facebook/libphutil
+      action: git repo=git://github.com/facebook/libphutil dest=/srv/www/facebook/libphutil
+      tags:
+        - install
+        - update
+    - name: Clone facebook/arcanist
+      action: git repo=git://github.com/facebook/arcanist dest=/srv/www/facebook/arcanist
+      tags:
+        - install
+        - update
+    - name: Clone facebook/phabricator
+      action: git repo=git://github.com/facebook/phabricator dest=/srv/www/facebook/phabricator
+      tags:
+        - install
+        - update
+    - name: Create a conf/custom directory.
+      action: file state=directory path=/srv/www/facebook/phabricator/conf/custom
+      tags:
+        - install
+    - name: Place a starting-point custom config in /srv/www/facebook/phabricator/conf/custom/myconfig.conf.php
+      action: template src=myconfig.conf.php dest=/srv/www/facebook/phabricator/conf/custom/myconfig.conf.php
+      tags:
+        - install
+    - name: Stop httpd
+      action: command service httpd stop
+      tags:
+        - update
+    - name: Migrate the database
+      action: command chdir=/srv/www/facebook/phabricator ./bin/storage upgrade --force
+      tags:
+        - install
+        - update
+    - name: Start PHD daemons
+      action: command chdir=/srv/www/facebook/phabricator ./bin/phd start
+      tags:
+        - install
+        - upgrade
+    - name: Starting $item
+      action: command service $item start
+      with_items:
+        - httpd
+        - mysqld
+      tags:
+        - install
+        - update
+
