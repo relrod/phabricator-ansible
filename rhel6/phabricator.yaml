@@ -23,6 +23,10 @@
       action: selinux policy=targeted state=permissive
       tags:
         - install
+    - name: Permanently disable SELinux
+      action: template src=selinux-config dest=/etc/selinux/config
+      tags:
+        - install
     - name: Add alias to 127.0.0.1 to /etc/hosts
       action: shell echo "127.0.0.1 ${domain}" >> /etc/hosts
       tags:
@@ -89,4 +93,8 @@
       tags:
         - install
         - update
-
+    - name: Open up some ports
+      action: template src=iptables dest=/etc/sysconfig/iptables
+      tags:
+        - install
+ 
