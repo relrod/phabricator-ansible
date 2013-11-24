@@ -1,0 +1,17 @@
+---
+- name: Install Mysql package
+  yum: name={{ item }} state=present
+  with_items:
+   - mysql-server
+   - MySQL-python
+
+- name: Autostart mysql
+  command: chkconfig mysqld on
+
+- name: Create Mysql configuration file
+  template: src=my.cnf dest=/etc/my.cnf
+  notify: 
+  - restart mysql
+
+- name: Start Mysql Service
+  service: name=mysqld state=started enabled=true

@@ -1,0 +1,18 @@
+---
+- name: Install php-fpm and deps
+  yum: name={{ item }} state=present
+  with_items:
+    - php
+    - php-fpm
+    - php-mysql
+    - php-gd
+    - php-mbstring
+    - php-posix
+    - php-apc
+
+- name: Autostart php-fpm
+  command: chkconfig php-fpm on
+
+- name: Copy php.ini configuration
+  template: src=php.ini dest=/etc/php.ini
+  notify: restart php-fpm
