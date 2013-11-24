@@ -1,0 +1,4 @@
+---
+domain: phabricator.local
+phabricator_path: /srv/www/facebook/phabricator/
+repositories_path: /var/repo/

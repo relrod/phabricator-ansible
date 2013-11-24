@@ -1,0 +1,30 @@
+---
+- name: Set PHABRICATOR_ENV. Forever.
+  shell: creates=/etc/profile.d/phabricator.sh echo 'export PHABRICATOR_ENV=custom/myconfig' > /etc/profile.d/phabricator.sh
+
+- name: Source the new profile file.
+  shell: source /etc/profile.d/phabricator.sh
+
+- name: Clone facebook/libphutil
+  git: repo=git://github.com/facebook/libphutil dest=/srv/www/facebook/libphutil
+
+- name: Clone facebook/arcanist
+  git: repo=git://github.com/facebook/arcanist dest=/srv/www/facebook/arcanist
+
+- name: Clone facebook/phabricator to {{ phabricator_path }}
+  git: repo=git://github.com/facebook/phabricator dest=/srv/www/facebook/phabricator
+
+- name: Create a conf/custom directory.
+  file: state=directory path={{ phabricator_path }}/conf/custom
+
+- name: Place a starting-point custom config in {{ phabricator_path }}conf/custom/myconfig.conf.php
+  template: src=myconfig.conf.php dest={{ phabricator_path }}conf/custom/myconfig.conf.php
+
+- name: Migrate the database
+  command: chdir={{ phabricator_path }} ./bin/storage upgrade --force
+
+- name: Start PHD daemons
+  command: chdir={{ phabricator_path }} ./bin/phd start
+
+- name: Create the repository directory
+  command: mkdir -p {{ repositories_path }}

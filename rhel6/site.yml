@@ -1,0 +1,12 @@
+---
+- name: Phabricator installer with NGINX, PHP-FPM, MySQL, GIT, SVN, Mercurial
+  hosts: all
+  user: root
+  sudo: True
+
+  roles:
+    - common
+    - nginx
+    - php-fpm
+    - mysql
+    - phabricator

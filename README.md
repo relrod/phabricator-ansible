@@ -1,32 +1,30 @@
 # phabricator-ansible
 
-Ansible playbooks for Phabricator installations.
+Ansible playbooks for Phabricator installations with Vagrant (optional).
 
-**This is still in very active development, and might break...**
-
-**NOTE: As of right now, this assumes that it's run on a dedicated
-box that is ONLY RUNNING PHABRICATOR.**
-
-**DO NOT RUN THIS BLINDLY ON A PRODUCTION BOX, IT _WILL_ BREAK THINGS**
+**Before running this playbook on a production server, make sure that non of this configuration
+break things or conflicts with your server**
 
 ## RHEL6
 
 #### Installing
 
-`ansible-playbook rhel6/phabricator.yaml --tags install`
+There is a Vagrantfile in the root of this repository in case you want to set it up
+quick, just do `vagrant up` and you will have an instance up and running on http://phabricator.local
 
-Answer any prompts (currently just the domain on which Phabricator lives).
+Add an entry to your host machine `/etc/hosts` file to this domain and that's it.
 
-#### Upgrading
+If you used vagrant before you should know the consequences of running a vagrant box in production.
 
-`ansible-playbook rhel6/phabricator.yaml --tags update`
+In case you want to run just the ansible playbooks on a server:
 
-Press enter, because the prompt doesn't matter for updates.
+`ansible-playbook -i rhel6/hosts rhel6/site.yml`
+
 
 # LICENSE
 
 ```
-Copyright (C) 2013 Ricky Elrod
+Copyright (C) 2013 Juan Carlos Alonso
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

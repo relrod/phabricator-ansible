@@ -9,7 +9,7 @@ return array(
   'metamta.default-address' => 'phabricator@{{domain}}',
   'metamta.domain'          => '{{domain}}',
 
-  'phabricator.timezone'    => 'America/New_York',
+  'phabricator.timezone'    => 'Europe/London',
   'pygments.enabled'        => true,
 
   // NOTE: Check default.conf.php for detailed explanations of all the
