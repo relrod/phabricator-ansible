@@ -2,8 +2,8 @@
 
 Ansible playbooks for Phabricator installations with Vagrant (optional).
 
-** Before running this playbook on a production server, make sure that non of this configuration
-break things or conflicts with your server **
+**Before running this playbook on a production server, make sure that non of this configuration
+break things or conflicts with your server**
 
 ## RHEL6
 
@@ -12,9 +12,9 @@ break things or conflicts with your server **
 There is a Vagrantfile in the root of this repository in case you want to set it up
 quick, just do `vagrant up` and you will have an instance up and running on http://phabricator.local
 
-Add an entry to your host machine /etc/hosts file to this domain and that's it.
+Add an entry to your host machine `/etc/hosts` file to this domain and that's it.
 
-If you used vagrant before you should know the consecuencies of running a vagrant box in production.
+If you used vagrant before you should know the consequences of running a vagrant box in production.
 
 In case you want to run just the ansible playbooks on a server:
 
